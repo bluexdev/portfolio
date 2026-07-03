@@ -16,7 +16,8 @@ export const HOME = groq`{
   "achievements": *[_type=="achievement"]|order(order asc),
   "settings": *[_type=="siteSettings"][0]{
     ...,
-    "photoUrl": photo.asset->url
+    "photoUrl": photo.asset->url,
+    "cvFileUrl": cvFile.asset->url
   }
 }`;
 
