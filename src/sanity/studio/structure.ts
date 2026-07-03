@@ -1,6 +1,4 @@
-import type {StructureResolver} from "sanity/structure";
-
-const singletonTypes = new Set(["siteSettings"]);
+import type { StructureResolver } from "sanity/structure";
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -20,9 +18,4 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem("post").title("▚ Blog posts"),
       S.documentTypeListItem("experience").title("◆ Experiencia"),
       S.documentTypeListItem("achievement").title("✦ Logros"),
-      S.divider(),
-      ...S.documentTypeListItems().filter((item) => {
-        const id = item.getId();
-        return id ? !singletonTypes.has(id) : true;
-      }),
     ]);
