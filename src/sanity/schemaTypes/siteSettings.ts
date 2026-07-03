@@ -107,8 +107,7 @@ const siteSettings = defineType({
       title: "CV PDF subido",
       type: "file",
       group: "assets",
-      description: "Opcion recomendada: sube el PDF aqui y no dependes de una URL manual.",
-      options: { accept: "application/pdf" },
+      description: "Opcion recomendada: sube aqui un PDF y no dependes de una URL manual.",
       hidden: ({ parent }) => parent?.showCv === false,
     }),
     defineField({
