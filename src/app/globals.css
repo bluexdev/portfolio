@@ -1,26 +1,173 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* — colores — */
+  --color-void: #060610;        /* fondo base */
+  --color-panel: #0a0a16;       /* cards */
+  --color-panel-2: #0b0b18;     /* cards alt */
+  --color-ink: #05050c;         /* texto sobre cyan / fondos duros */
+  --color-electric: #0047FF;    /* azul eléctrico — bordes primarios */
+  --color-blue: #0080FF;        /* labels // */
+  --color-sky: #00BFFF;         /* acentos, headings */
+  --color-cyan: #00FFFF;        /* interactivo/activo, glow */
+  --color-success: #27c93f;
+  --color-danger: #ff4d6d;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* — sombras — */
+  --shadow-pixel: 6px 6px 0 rgb(0 0 0 / 0.5);
+  --shadow-pixel-sm: 5px 5px 0 rgb(0 0 0 / 0.45);
+  --shadow-glow: 0 0 22px rgb(0 255 255 / 0.4);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* breakpoint del menú móvil */
+  --breakpoint-nav: 780px;
+
+  /* — animaciones — */
+  --animate-blink: cxd-blink 1.05s step-end infinite;
+  --animate-pulse-soft: cxd-pulse 1.6s ease-in-out infinite;
+  --animate-pulse-cta: cxd-pulse 1.4s ease-in-out infinite;
+
+  @keyframes cxd-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  @keyframes cxd-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+  @keyframes cxd-pulse {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 0.9; }
+  }
+  @keyframes cxd-bootline {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 }
 
+/* Las variables de next/font viven en <body>, así que las fuentes deben
+   declararse inline para que las utilidades las resuelvan en el elemento. */
+@theme inline {
+  --font-display: var(--font-press), "Press Start 2P", monospace;
+  --font-mono: var(--font-jb), "JetBrains Mono", monospace;
+  --font-body: var(--font-geist), "Geist", sans-serif;
+}
+
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--color-void);
+  color: #fff;
+  font-family: var(--font-geist), "Geist", sans-serif;
+}
+
+::selection {
+  background: var(--color-electric);
+  color: #fff;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* cursor pixel: se activa solo con pointer:fine y sin reduced-motion */
+@media (pointer: fine) {
+  html[data-cursor="pixel"],
+  html[data-cursor="pixel"] * {
+    cursor: none !important;
+  }
+}
+
+/* parpadeo del avatar pixel (párpados visibles un instante) */
+@keyframes cxd-lidblink {
+  0%, 90.5%, 96.5%, 100% { opacity: 0; }
+  92%, 95% { opacity: 1; }
+}
+.cxd-lids {
+  opacity: 0;
+  animation: cxd-lidblink 4.8s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cxd-lids {
+    animation: none;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(0 128 255 / 0.35);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@layer components {
+  /* panel de sección: 100vw × 100vh dentro del track horizontal */
+  .cx-section {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+    padding: clamp(76px, 11vh, 104px) clamp(20px, 7vw, 80px);
+  }
+
+  /* label superior "// SECCIÓN" */
+  .cx-label {
+    font-family: var(--font-jb), "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    color: var(--color-blue);
+  }
+
+  /* fondo ambiente: radiales + rejilla pixel */
+  .cx-ambient {
+    background:
+      radial-gradient(110% 80% at 18% 0%, rgb(0 71 255 / 0.13), transparent 58%),
+      radial-gradient(90% 90% at 100% 100%, rgb(0 191 255 / 0.1), transparent 55%),
+      var(--color-void);
+  }
+  .cx-grid-bg {
+    background-image:
+      linear-gradient(rgb(0 128 255 / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(0 128 255 / 0.05) 1px, transparent 1px);
+    background-size: 34px 34px;
+  }
+
+  /* overlays retro */
+  .cx-vignette {
+    background: radial-gradient(125% 125% at 50% 50%, transparent 56%, rgb(0 0 0 / 0.55) 100%);
+  }
+  .cx-scanlines {
+    background: repeating-linear-gradient(
+      0deg,
+      rgb(0 0 0 / 0.1) 0px,
+      rgb(0 0 0 / 0.1) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    opacity: 0.5;
+  }
+  /* tile de logro: glow según rareza (var inyectada por el componente) */
+  .cx-ach:hover {
+    box-shadow: var(--ach-glow);
+    border-color: var(--ach-glyph) !important;
+  }
+
+  .cx-noise {
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 }
