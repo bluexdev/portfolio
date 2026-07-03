@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run",
+    "sanity:dev": "sanity dev --host 127.0.0.1 --port 3333",
+    "sanity:deploy": "sanity deploy",
+    "sanity:seed": "sanity exec scripts/seed-sanity.ts --with-user-token",
+    "sanity:seed:token": "tsx scripts/seed-sanity.ts"
   },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^13.11.1",
@@ -20,13 +25,18 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@sanity/vision": "^3.99.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.20",
+    "sanity": "^3.99.0",
+    "styled-components": "^6.4.3",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "tsx": "^4.22.5",
+    "typescript": "^5",
+    "vitest": "^4.1.9"
   }
 }

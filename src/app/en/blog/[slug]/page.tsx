@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getPostSlugs } from "@/lib/data";
-import PostScreen, { buildPostMetadata } from "./PostScreen";
+import PostScreen, { buildPostMetadata } from "../../../blog/[slug]/PostScreen";
 
 export const revalidate = 60;
 
@@ -15,10 +15,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  return buildPostMetadata(slug, "es");
+  return buildPostMetadata(slug, "en");
 }
 
-export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function EnglishPostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
-  return <PostScreen slug={slug} locale="es" />;
+  return <PostScreen slug={slug} locale="en" />;
 }

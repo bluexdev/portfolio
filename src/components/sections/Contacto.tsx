@@ -1,19 +1,31 @@
 import RevealStagger from "@/components/fx/RevealStagger";
+import type { Dict } from "@/lib/i18n";
+import { isCvDownloadEnabled, whatsappUrl } from "@/lib/portfolioConfig";
 import type { SiteSettings } from "@/lib/types";
 
 const LINK_HOVER = "text-cyan no-underline hover:underline";
 
-export default function Contacto({ index, settings }: { index: number; settings: SiteSettings }) {
+export default function Contacto({
+  index,
+  settings,
+  dict,
+}: {
+  index: number;
+  settings: SiteSettings;
+  dict: Dict;
+}) {
   const year = new Date().getFullYear();
   const linkedinUser = settings.linkedin.replace(/\/$/, "").split("/").pop() ?? settings.linkedin;
   const githubUser = settings.github.replace(/\/$/, "").split("/").pop() ?? settings.github;
+  const waUrl = whatsappUrl(settings);
+  const cvEnabled = isCvDownloadEnabled(settings);
 
   return (
     <section className="cx-section py-[clamp(82px,11vh,104px)]">
       <RevealStagger index={index} className="m-auto w-full max-w-[920px]">
-        <div className="cx-label mb-4">{"// CONTACTO"}</div>
+        <div className="cx-label mb-4">{dict.contacto.label}</div>
         <h2 className="mb-8 mt-0 font-display text-[clamp(18px,3.2vw,38px)] leading-normal text-white">
-          INICIAR<span className="text-sky">_</span>CONEXIÓN
+          {dict.contacto.title}
         </h2>
 
         {/* terminal */}
@@ -36,7 +48,7 @@ export default function Contacto({ index, settings }: { index: number; settings:
             </div>
             <div className="pl-[22px]">
               <span className="text-blue">&quot;phone&quot;</span>:{" "}
-              <a href={`tel:${settings.phone}`} className={LINK_HOVER}>
+              <a href={waUrl} target="_blank" rel="noreferrer" className={LINK_HOVER}>
                 &quot;{settings.phoneDisplay}&quot;
               </a>
               ,
@@ -52,6 +64,13 @@ export default function Contacto({ index, settings }: { index: number; settings:
               <span className="text-blue">&quot;github&quot;</span>:{" "}
               <a href={settings.github} target="_blank" rel="noreferrer" className={LINK_HOVER}>
                 &quot;{githubUser}&quot;
+              </a>
+              ,
+            </div>
+            <div className="pl-[22px]">
+              <span className="text-blue">&quot;whatsapp&quot;</span>:{" "}
+              <a href={waUrl} target="_blank" rel="noreferrer" className={LINK_HOVER}>
+                &quot;wa.me/{settings.phone.replace(/\D/g, "")}&quot;
               </a>
               ,
             </div>
@@ -77,8 +96,25 @@ export default function Contacto({ index, settings }: { index: number; settings:
             href={`mailto:${settings.email}`}
             className="bg-cyan px-[22px] py-3.5 font-mono text-xs font-bold tracking-[.14em] text-ink no-underline shadow-[0_0_22px_rgba(0,255,255,.35)] transition-all duration-200 hover:shadow-[0_0_32px_rgba(0,255,255,.6)]"
           >
-            ✉ ESCRÍBEME
+            {dict.contacto.write}
           </a>
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="border border-success/55 bg-success/7 px-[22px] py-3.5 font-mono text-xs font-bold tracking-[.14em] text-success no-underline transition-all duration-200 hover:border-cyan hover:text-cyan hover:shadow-[0_0_22px_rgba(0,255,255,.35)]"
+          >
+            {dict.contacto.whatsapp}
+          </a>
+          {cvEnabled && (
+            <a
+              href={settings.cvUrl}
+              download
+              className="border border-electric bg-transparent px-[22px] py-3.5 font-mono text-xs tracking-[.14em] text-sky no-underline transition-all duration-200 hover:border-cyan hover:text-cyan hover:shadow-[0_0_22px_rgba(0,255,255,.35)]"
+            >
+              {dict.hero.cv}
+            </a>
+          )}
           <a
             href={settings.github}
             target="_blank"
@@ -98,7 +134,7 @@ export default function Contacto({ index, settings }: { index: number; settings:
         </div>
 
         <div className="font-mono text-[10px] tracking-[.16em] text-white/30">
-          © {year} CARLOS ALVAREZ PONCE · BUILT WITH PIXELS &amp; ELECTRIC BLUE
+          © {year} {dict.contacto.footer}
         </div>
       </RevealStagger>
     </section>

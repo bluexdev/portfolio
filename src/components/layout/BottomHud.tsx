@@ -2,10 +2,11 @@
 
 import { useTrack } from "./HorizontalTrack";
 import Scramble from "@/components/fx/Scramble";
+import type { Dict } from "@/lib/i18n";
 import { pad2 } from "@/lib/utils";
 
-export default function BottomHud() {
-  const { names, activeIdx, goTo } = useTrack();
+export default function BottomHud({ dict }: { dict: Dict }) {
+  const { names, activeIdx, goTo, playBlip } = useTrack();
 
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[38] flex items-center justify-between gap-3 px-[clamp(18px,4vw,40px)] pb-5 pt-4">
@@ -22,7 +23,10 @@ export default function BottomHud() {
         {names.map((label, idx) => (
           <button
             key={label}
-            onClick={() => goTo(idx)}
+            onClick={() => {
+              playBlip("nav");
+              goTo(idx);
+            }}
             aria-label={label}
             className="size-[11px] border border-blue/40 p-0 transition-all duration-200"
             style={
@@ -35,7 +39,7 @@ export default function BottomHud() {
       </div>
 
       <div className="hidden whitespace-nowrap font-mono text-[11px] tracking-[.16em] text-white/60 nav:block">
-        DESPLAZA <span className="text-cyan">→</span>
+        {dict.hud.scroll} <span className="text-cyan">→</span>
       </div>
     </div>
   );

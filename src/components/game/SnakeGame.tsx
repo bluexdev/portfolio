@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTrack } from "@/components/layout/HorizontalTrack";
+import type { Dict } from "@/lib/i18n";
 
 const COLS = 22;
 const ROWS = 16;
@@ -33,8 +34,8 @@ const DPAD_BTN =
  * acelera cada 50). Flechas/WASD/D-pad; SPACE inicia, ESC sale.
  * BEST persistido en localStorage.
  */
-export default function SnakeGame({ index }: { index: number }) {
-  const { activeIdx, xblue, setKeysLocked, reduced } = useTrack();
+export default function SnakeGame({ index, dict }: { index: number; dict: Dict }) {
+  const { activeIdx, xblue, setKeysLocked, reduced, playBlip } = useTrack();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
@@ -158,8 +159,9 @@ export default function SnakeGame({ index }: { index: number }) {
       }
       return b;
     });
+    playBlip("fail");
     setStatus("over");
-  }, [reduced, setKeysLocked]);
+  }, [playBlip, reduced, setKeysLocked]);
 
   const step = useCallback(() => {
     const g = game.current;
@@ -181,6 +183,7 @@ export default function SnakeGame({ index }: { index: number }) {
     if (g.food && head.x === g.food.x && head.y === g.food.y) {
       scoreRef.current += 10;
       setScore(scoreRef.current);
+      playBlip("ok");
       spawnFood();
       // acelera cada 50 pts
       if (g.speed > MIN_SPEED && scoreRef.current % 50 === 0) {
@@ -192,7 +195,7 @@ export default function SnakeGame({ index }: { index: number }) {
       g.snake.pop();
     }
     draw();
-  }, [draw, endGame, spawnFood]);
+  }, [draw, endGame, playBlip, spawnFood]);
 
   const setDir = useCallback((x: number, y: number) => {
     const g = game.current;
@@ -217,11 +220,12 @@ export default function SnakeGame({ index }: { index: number }) {
     scoreRef.current = 0;
     setScore(0);
     setStatus("playing");
+    playBlip("ok");
     setKeysLocked(true);
     clearInterval(timer.current);
     timer.current = window.setInterval(step, START_SPEED);
     draw();
-  }, [draw, setKeysLocked, spawnFood, step]);
+  }, [draw, playBlip, setKeysLocked, spawnFood, step]);
 
   // best desde localStorage
   useEffect(() => {
@@ -301,29 +305,32 @@ export default function SnakeGame({ index }: { index: number }) {
     <div className="m-auto flex w-full max-w-[1160px] flex-wrap items-center justify-center gap-[clamp(28px,5vw,70px)]">
       {/* columna de info */}
       <div className="min-w-0 max-w-[400px] flex-[1_1_300px]">
-        <div className="cx-label mb-4">{"// ARCADE.EXE"}</div>
+        <div className="cx-label mb-4">{dict.arcade.label}</div>
         <h2 className="mb-[22px] mt-0 font-display text-[clamp(18px,3vw,34px)] leading-normal text-white">
-          SNAKE<span className="text-sky">{"//"}</span>DEV
+          {dict.arcade.title}
         </h2>
         <p className="mb-[26px] mt-0 text-[15px] leading-[1.8] text-white/60">
-          La culebra come <strong className="font-semibold text-cyan">tokens de stack</strong>. Cada
-          uno suma 10 pts y acelera el juego. No choques con los muros ni contigo mismo.
+          {dict.arcade.copy}
         </p>
         <div className="mb-6 flex gap-3.5">
           <div className="flex-1 border border-blue/25 bg-panel-2 px-4 py-3.5">
-            <div className="mb-2 font-mono text-[10px] tracking-[.16em] text-white/40">SCORE</div>
+            <div className="mb-2 font-mono text-[10px] tracking-[.16em] text-white/40">
+              {dict.arcade.score}
+            </div>
             <div className="font-display text-xl text-cyan [text-shadow:0_0_16px_rgba(0,255,255,.5)]">
               {score}
             </div>
           </div>
           <div className="flex-1 border border-blue/25 bg-panel-2 px-4 py-3.5">
-            <div className="mb-2 font-mono text-[10px] tracking-[.16em] text-white/40">BEST</div>
+            <div className="mb-2 font-mono text-[10px] tracking-[.16em] text-white/40">
+              {dict.arcade.best}
+            </div>
             <div className="font-display text-xl text-blue">{best}</div>
           </div>
         </div>
         <div className="font-mono text-[11px] leading-loose tracking-[.08em] text-white/40">
-          <div>↑ ↓ ← →&nbsp;&nbsp;/&nbsp;&nbsp;W A S D&nbsp;&nbsp;·&nbsp;&nbsp;D-PAD MÓVIL</div>
-          <div>SPACE&nbsp;&nbsp;INICIAR&nbsp;&nbsp;·&nbsp;&nbsp;ESC&nbsp;&nbsp;SALIR</div>
+          <div>{dict.arcade.controls1}</div>
+          <div>{dict.arcade.controls2}</div>
         </div>
       </div>
 
@@ -340,34 +347,31 @@ export default function SnakeGame({ index }: { index: number }) {
           {status === "idle" && (
             <div className="absolute inset-3.5 flex flex-col items-center justify-center gap-[22px] bg-ink/82 text-center">
               <div className="font-display text-[13px] leading-[1.7] text-sky">
-                INSERT
-                <br />
-                COIN
+                {dict.arcade.insert}
               </div>
               <button
                 onClick={start}
                 className="animate-pulse-cta cursor-pointer border-none bg-cyan px-[26px] py-3.5 font-mono text-[13px] font-bold tracking-[.16em] text-ink shadow-[0_0_24px_rgba(0,255,255,.5)]"
               >
-                ▶ PRESS START
+                {dict.arcade.press}
               </button>
             </div>
           )}
           {status === "over" && (
             <div className="absolute inset-3.5 flex flex-col items-center justify-center gap-[18px] bg-ink/85 text-center">
               <div className="font-display text-[15px] leading-[1.6] text-danger [text-shadow:0_0_18px_rgba(255,77,109,.5)]">
-                GAME
-                <br />
-                OVER
+                {dict.arcade.overTitle}
               </div>
               <div className="font-mono text-xs text-white">
-                SCORE <span className="text-cyan">{score}</span>&nbsp;·&nbsp;BEST{" "}
+                {dict.arcade.score} <span className="text-cyan">{score}</span>&nbsp;·&nbsp;
+                {dict.arcade.best}{" "}
                 <span className="text-blue">{best}</span>
               </div>
               <button
                 onClick={start}
                 className="cursor-pointer border-none bg-cyan px-[22px] py-3 font-mono text-xs font-bold tracking-[.14em] text-ink shadow-[0_0_22px_rgba(0,255,255,.5)]"
               >
-                ↻ REINTENTAR
+                {dict.arcade.retry}
               </button>
             </div>
           )}
@@ -376,17 +380,17 @@ export default function SnakeGame({ index }: { index: number }) {
         {/* D-pad táctil (48px, touch target AA) */}
         <div className="grid grid-cols-[repeat(3,48px)] grid-rows-[repeat(2,48px)] gap-1.5">
           <span />
-          <button onClick={() => setDir(0, -1)} aria-label="Arriba" className={DPAD_BTN}>
+          <button onClick={() => setDir(0, -1)} aria-label={dict.arcade.up} className={DPAD_BTN}>
             ↑
           </button>
           <span />
-          <button onClick={() => setDir(-1, 0)} aria-label="Izquierda" className={DPAD_BTN}>
+          <button onClick={() => setDir(-1, 0)} aria-label={dict.arcade.left} className={DPAD_BTN}>
             ←
           </button>
-          <button onClick={() => setDir(0, 1)} aria-label="Abajo" className={DPAD_BTN}>
+          <button onClick={() => setDir(0, 1)} aria-label={dict.arcade.down} className={DPAD_BTN}>
             ↓
           </button>
-          <button onClick={() => setDir(1, 0)} aria-label="Derecha" className={DPAD_BTN}>
+          <button onClick={() => setDir(1, 0)} aria-label={dict.arcade.right} className={DPAD_BTN}>
             →
           </button>
         </div>

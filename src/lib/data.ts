@@ -9,16 +9,22 @@ import { HOME, POST_BY_SLUG, POST_SLUGS } from "@/sanity/lib/queries";
 interface RawProject {
   _id: string;
   title?: string;
+  titleEn?: string;
   slugStr?: string;
   tag?: string;
   status?: Project["status"];
   summary?: string;
+  summaryEn?: string;
   bullets?: string[];
+  bulletsEn?: string[];
   stack?: string[];
   hasDetail?: boolean;
   longDesc?: string;
+  longDescEn?: string;
   features?: string[];
+  featuresEn?: string[];
   metrics?: { k?: string; v?: string }[];
+  impactMetrics?: { k?: string; v?: string }[];
   repoUrl?: string;
   demoUrl?: string;
   heroUrl?: string | null;
@@ -30,25 +36,35 @@ interface RawProject {
 interface RawPost {
   _id: string;
   title?: string;
+  titleEn?: string;
   slugStr?: string;
   glyph?: string;
   tag?: string;
   excerpt?: string;
+  excerptEn?: string;
   body?: PortableTextBlock[];
   publishedAt?: string;
   readingTime?: string;
+  coverUrl?: string | null;
 }
 
 interface RawSettings {
   availabilityText?: string;
+  availabilityTextEn?: string;
   email?: string;
   phone?: string;
+  phoneDisplay?: string;
   github?: string;
   linkedin?: string;
   location?: string;
+  locationEn?: string;
   photoUrl?: string | null;
   showBlog?: boolean;
   showTrayecto?: boolean;
+  showCv?: boolean;
+  cvUrl?: string;
+  showProjectMetrics?: boolean;
+  soundEnabled?: boolean;
 }
 
 interface RawAchievement {
@@ -63,7 +79,15 @@ interface RawAchievement {
 interface RawHome {
   projects?: RawProject[];
   posts?: RawPost[];
-  experience?: { role?: string; org?: string; location?: string; bullets?: string[] }[];
+  experience?: {
+    role?: string;
+    roleEn?: string;
+    org?: string;
+    location?: string;
+    locationEn?: string;
+    bullets?: string[];
+    bulletsEn?: string[];
+  }[];
   achievements?: RawAchievement[];
   settings?: RawSettings | null;
 }
@@ -73,15 +97,21 @@ function mapProject(p: RawProject): Project {
   return {
     id,
     name: p.title ?? "",
+    nameEn: p.titleEn,
     tag: p.tag ?? "",
     status: p.status ?? "PERSONAL",
     summary: p.summary ?? "",
+    summaryEn: p.summaryEn,
     bullets: p.bullets ?? [],
+    bulletsEn: p.bulletsEn,
     stack: p.stack ?? [],
     hasDetail: p.hasDetail ?? false,
     longDesc: p.longDesc ?? "",
+    longDescEn: p.longDescEn,
     features: p.features ?? [],
+    featuresEn: p.featuresEn,
     metrics: (p.metrics ?? []).map((m) => ({ k: m.k ?? "", v: m.v ?? "" })),
+    impactMetrics: (p.impactMetrics ?? []).map((m) => ({ k: m.k ?? "", v: m.v ?? "" })),
     repoUrl: p.repoUrl ?? "#",
     demoUrl: p.demoUrl,
     heroUrl: p.heroUrl ?? null,
@@ -98,9 +128,12 @@ function mapPost(p: RawPost): Post {
     glyph: p.glyph ?? "▚",
     tag: p.tag ?? "",
     title: p.title ?? "",
+    titleEn: p.titleEn,
     excerpt: p.excerpt ?? "",
+    excerptEn: p.excerptEn,
     publishedAt: p.publishedAt ? formatPixelDate(p.publishedAt) : "",
     readingTime: p.readingTime ?? "",
+    coverUrl: p.coverUrl ?? null,
     body: p.body,
   };
 }
@@ -109,14 +142,20 @@ function mapSettings(s: RawSettings | null | undefined): SiteSettings {
   if (!s) return FALLBACK_SETTINGS;
   return {
     availabilityText: s.availabilityText ?? FALLBACK_SETTINGS.availabilityText,
+    availabilityTextEn: s.availabilityTextEn ?? FALLBACK_SETTINGS.availabilityTextEn,
     email: s.email ?? FALLBACK_SETTINGS.email,
     phone: (s.phone ?? FALLBACK_SETTINGS.phone).replace(/\s+/g, ""),
-    phoneDisplay: s.phone ?? FALLBACK_SETTINGS.phoneDisplay,
+    phoneDisplay: s.phoneDisplay ?? s.phone ?? FALLBACK_SETTINGS.phoneDisplay,
     github: s.github ?? FALLBACK_SETTINGS.github,
     linkedin: s.linkedin ?? FALLBACK_SETTINGS.linkedin,
     location: s.location ?? FALLBACK_SETTINGS.location,
-    showBlog: s.showBlog ?? true,
+    locationEn: s.locationEn ?? FALLBACK_SETTINGS.locationEn,
+    showBlog: s.showBlog ?? false,
     showTrayecto: s.showTrayecto ?? true,
+    showCv: s.showCv ?? FALLBACK_SETTINGS.showCv,
+    cvUrl: s.cvUrl ?? FALLBACK_SETTINGS.cvUrl,
+    showProjectMetrics: s.showProjectMetrics ?? false,
+    soundEnabled: s.soundEnabled ?? false,
     photoUrl: s.photoUrl ?? null,
   };
 }
@@ -136,9 +175,12 @@ export async function getHomeData(): Promise<HomeData> {
       experience: raw.experience?.length
         ? raw.experience.map((e) => ({
             role: e.role ?? "",
+            roleEn: e.roleEn,
             org: e.org ?? "",
             location: e.location ?? "",
+            locationEn: e.locationEn,
             bullets: e.bullets ?? [],
+            bulletsEn: e.bulletsEn,
           }))
         : FALLBACK_HOME.experience,
       achievements: raw.achievements?.length

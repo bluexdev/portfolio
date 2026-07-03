@@ -202,6 +202,11 @@ export const FALLBACK_PROJECTS: Project[] = [
       { k: "AÑO", v: "2025" },
       { k: "ESTADO", v: "Producción" },
     ],
+    impactMetrics: [
+      { k: "LCP", v: "~1.2s" },
+      { k: "ÓRDENES", v: "300+" },
+      { k: "COBROS DUP.", v: "0" },
+    ],
     features: [
       "APIs REST para checkout, órdenes, webhooks y fulfillment",
       "Webhooks idempotentes y validación de datos con Zod",
@@ -404,14 +409,20 @@ export const FALLBACK_POSTS: Post[] = [
 
 export const FALLBACK_SETTINGS: SiteSettings = {
   availabilityText: "DISPONIBLE — ROLES FULL STACK · BACKEND · AUTOMATIZACIÓN",
+  availabilityTextEn: "AVAILABLE — FULL STACK · BACKEND · AUTOMATION ROLES",
   email: "carmm41@gmail.com",
   phone: "+51938847564",
   phoneDisplay: "+51 938 847 564",
   github: "https://github.com/bluexdev",
   linkedin: "https://linkedin.com/in/carlos-alvarez-ponce",
   location: "Lima, Perú",
-  showBlog: true,
+  locationEn: "Lima, Peru",
+  showBlog: false,
   showTrayecto: true,
+  showCv: true,
+  cvUrl: "/carlos-alvarez-ponce-cv.pdf",
+  showProjectMetrics: false,
+  soundEnabled: false,
   photoUrl: null,
 };
 

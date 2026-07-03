@@ -9,6 +9,7 @@ export const HOME = groq`{
   },
   "posts": *[_type=="post"]|order(publishedAt desc)[0...3]{
     ...,
+    "coverUrl": coverImage.asset->url,
     "slugStr": slug.current
   },
   "experience": *[_type=="experience"]|order(order asc),
@@ -23,5 +24,6 @@ export const POST_SLUGS = groq`*[_type=="post" && defined(slug.current)].slug.cu
 
 export const POST_BY_SLUG = groq`*[_type=="post" && slug.current==$slug][0]{
   ...,
+  "coverUrl": coverImage.asset->url,
   "slugStr": slug.current
 }`;

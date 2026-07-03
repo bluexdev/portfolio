@@ -13,9 +13,15 @@ export default function GoButton({
   className?: string;
   children: ReactNode;
 }) {
-  const { goToSection } = useTrack();
+  const { goToSection, playBlip } = useTrack();
   return (
-    <button onClick={() => goToSection(section)} className={className}>
+    <button
+      onClick={() => {
+        playBlip("nav");
+        goToSection(section);
+      }}
+      className={className}
+    >
       {children}
     </button>
   );

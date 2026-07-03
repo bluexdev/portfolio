@@ -1,0 +1,72 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { PortableText, type PortableTextBlock } from "@portabletext/react";
+import { getPost } from "@/lib/data";
+import { getDict } from "@/lib/i18n";
+import type { Locale } from "@/lib/portfolioConfig";
+
+export async function buildPostMetadata(slug: string, locale: Locale): Promise<Metadata> {
+  const post = await getPost(slug);
+  if (!post) return { title: "Post no encontrado - CARLXSDEV" };
+  const title = locale === "en" ? post.titleEn ?? post.title : post.title;
+  const excerpt = locale === "en" ? post.excerptEn ?? post.excerpt : post.excerpt;
+  return {
+    title: `${title} - DEV_LOG · CARLXSDEV`,
+    description: excerpt,
+  };
+}
+
+export default async function PostScreen({ slug, locale }: { slug: string; locale: Locale }) {
+  const post = await getPost(slug);
+  if (!post) notFound();
+
+  const dict = getDict(locale);
+  const prefix = locale === "en" ? "/en" : "";
+  const body = post.body ?? [];
+  const isPlainText = body.length > 0 && typeof body[0] === "string";
+  const title = locale === "en" ? post.titleEn ?? post.title : post.title;
+
+  return (
+    <div className="cx-ambient min-h-screen">
+      <div className="cx-grid-bg pointer-events-none fixed inset-0" />
+
+      <main className="relative mx-auto max-w-[760px] px-5 py-[clamp(48px,8vh,80px)]">
+        <Link
+          href={`${prefix}/#${dict.names.blog.toLowerCase()}`}
+          className="mb-10 inline-block font-mono text-[11px] tracking-[.16em] text-sky no-underline transition-colors hover:text-cyan"
+        >
+          {dict.blog.back}
+        </Link>
+
+        <div className="mb-5 flex flex-wrap items-center gap-2.5 font-mono text-[10px] tracking-[.1em] text-white/55">
+          <span className="text-[15px] text-cyan">{post.glyph}</span>
+          <span className="bg-sky px-[7px] py-[3px] font-bold text-ink">{post.tag}</span>
+          <span>{post.publishedAt}</span>
+          <span>·</span>
+          <span>{post.readingTime}</span>
+        </div>
+
+        <h1 className="mb-9 mt-0 font-display text-[clamp(17px,3.4vw,26px)] leading-[1.7] text-white">
+          {title}
+        </h1>
+
+        <article className="flex flex-col gap-5 text-[15px] leading-[1.9] text-white/72">
+          {isPlainText ? (
+            (body as string[]).map((paragraph, i) => (
+              <p key={i} className="m-0">
+                {paragraph}
+              </p>
+            ))
+          ) : (
+            <PortableText value={body as PortableTextBlock[]} />
+          )}
+        </article>
+
+        <div className="mt-14 border-t border-blue/18 pt-6 font-mono text-[10px] tracking-[.16em] text-white/30">
+          © {new Date().getFullYear()} CARLOS ALVAREZ PONCE · CARLXSDEV
+        </div>
+      </main>
+    </div>
+  );
+}

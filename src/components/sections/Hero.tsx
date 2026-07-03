@@ -1,5 +1,8 @@
 import GoButton from "@/components/fx/GoButton";
 import Scramble from "@/components/fx/Scramble";
+import type { Dict } from "@/lib/i18n";
+import { isCvDownloadEnabled } from "@/lib/portfolioConfig";
+import type { SiteSettings } from "@/lib/types";
 
 const FLOATERS = [
   { className: "left-[9%] top-[18%] size-[18px] bg-electric shadow-[0_0_18px_#0047FF]", anim: "cxd-float 5s ease-in-out infinite" },
@@ -11,7 +14,9 @@ const FLOATERS = [
 const CTA_BASE =
   "cursor-pointer px-6 py-[15px] font-mono text-xs tracking-[.16em] transition-all duration-200";
 
-export default function Hero() {
+export default function Hero({ dict, settings }: { dict: Dict; settings: SiteSettings }) {
+  const cvEnabled = isCvDownloadEnabled(settings);
+
   return (
     <section className="cx-section px-[clamp(20px,6vw,80px)]">
       {/* píxeles flotantes decorativos */}
@@ -21,7 +26,7 @@ export default function Hero() {
 
       <div className="m-auto w-full max-w-[900px] text-center">
         <div className="mb-[30px] pl-[.5em] font-mono text-[clamp(10px,1.4vw,13px)] tracking-[.5em] text-blue">
-          CARLOS ALVAREZ PONCE
+          {dict.hero.tag}
         </div>
         <h1 className="m-0 font-display text-[clamp(28px,5.8vw,64px)] leading-[1.42] text-white [text-shadow:0_0_30px_rgba(0,71,255,.5)]">
           <Scramble text="CARLXS" speed={55} className="text-white" />
@@ -33,26 +38,35 @@ export default function Hero() {
           <span className="inline-block animate-blink text-cyan">_</span>
         </h1>
         <div className="mt-[34px] font-mono text-[clamp(10px,1.5vw,14px)] tracking-[.22em] text-white/55">
-          FULL STACK DEVELOPER · FOUNDER @ XBLUE · AI / AUTOMATION · LIMA, PE
+          {dict.hero.sub}
         </div>
         <div className="mt-[42px] flex flex-wrap justify-center gap-3.5">
           <GoButton
-            section="PROYECTOS"
-            className={`${CTA_BASE} border border-electric bg-blue/6 text-sky hover:border-cyan hover:bg-blue/12 hover:text-cyan hover:shadow-glow`}
+            section={dict.names.proyectos}
+            className={`${CTA_BASE} border border-cyan bg-cyan font-bold text-ink shadow-[0_0_24px_rgba(0,255,255,.42)] hover:bg-white hover:shadow-[0_0_34px_rgba(0,255,255,.62)]`}
           >
-            [ PROYECTOS ]
+            {dict.hero.ctaProjects}
           </GoButton>
+          {cvEnabled && (
+            <a
+              href={settings.cvUrl}
+              download
+              className={`${CTA_BASE} border border-electric bg-blue/10 text-sky no-underline hover:border-cyan hover:text-cyan hover:shadow-glow`}
+            >
+              {dict.hero.cv}
+            </a>
+          )}
           <GoButton
-            section="ARCADE"
+            section={dict.names.arcade}
             className={`${CTA_BASE} border border-white/18 bg-transparent text-white/60 hover:border-cyan hover:text-cyan hover:shadow-glow`}
           >
-            [ ARCADE ]
+            {dict.hero.ctaArcade}
           </GoButton>
           <GoButton
-            section="CONTACTO"
+            section={dict.names.contacto}
             className={`${CTA_BASE} border border-white/18 bg-transparent text-white/60 hover:border-cyan hover:text-cyan hover:shadow-glow`}
           >
-            [ CONTACTO ]
+            {dict.hero.ctaContact}
           </GoButton>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import RevealStagger from "@/components/fx/RevealStagger";
+import type { Dict } from "@/lib/i18n";
 import type { Achievement, AchievementCategory, AchievementTier, Experience } from "@/lib/types";
 
 const GOLD = "#ffd75e";
@@ -93,18 +94,20 @@ export default function Trayecto({
   index,
   experience,
   achievements,
+  dict,
 }: {
   index: number;
   experience: Experience[];
   achievements: Achievement[];
+  dict: Dict;
 }) {
   return (
     <section className="cx-section px-[clamp(20px,6vw,72px)] py-[clamp(84px,11vh,104px)]">
       <RevealStagger index={index} className="m-auto w-full max-w-[1320px]">
         <div className="mb-7">
-          <div className="cx-label mb-4">{"// TRAYECTO"}</div>
+          <div className="cx-label mb-4">{dict.trayecto.label}</div>
           <h2 className="m-0 font-display text-[clamp(20px,3.2vw,38px)] text-white">
-            QUEST<span className="text-sky">_</span>LOG
+            {dict.trayecto.title}
           </h2>
         </div>
 
@@ -122,7 +125,7 @@ export default function Trayecto({
                     </div>
                   </div>
                   <span className="whitespace-nowrap border border-success/45 px-2 py-[5px] font-mono text-[9px] tracking-[.12em] text-success">
-                    ✓ MISIÓN COMPLETADA
+                    {dict.trayecto.mission}
                   </span>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -140,22 +143,22 @@ export default function Trayecto({
           <div className="min-w-0 flex-[1.3_1_460px]">
             <div className="mb-3.5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
               <div className="font-mono text-[11px] tracking-[.24em] text-cyan">
-                🏆 LOGROS DESBLOQUEADOS{" "}
+                {dict.trayecto.unlocked}{" "}
                 <span className="text-white/45">— {achievements.length}</span>
               </div>
               {/* leyenda de rareza arcade */}
               <div className="flex items-center gap-3.5 font-mono text-[9px] tracking-[.12em]">
                 <span className="flex items-center gap-1.5" style={{ color: GOLD }}>
                   <span className="size-2" style={{ background: GOLD, boxShadow: `0 0 8px ${GOLD}` }} />
-                  LEGENDARIO
+                  {dict.trayecto.tierLegend}
                 </span>
                 <span className="flex items-center gap-1.5 text-cyan">
                   <span className="size-2 bg-cyan shadow-[0_0_8px_#00FFFF]" />
-                  ÉPICO
+                  {dict.trayecto.tierEpic}
                 </span>
                 <span className="flex items-center gap-1.5 text-white/45">
                   <span className="size-2 bg-sky/60" />
-                  COMÚN
+                  {dict.trayecto.tierCommon}
                 </span>
               </div>
             </div>

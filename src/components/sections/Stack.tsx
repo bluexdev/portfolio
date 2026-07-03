@@ -1,17 +1,80 @@
+import {
+  SiAngular,
+  SiDocker,
+  SiDotnet,
+  SiFastapi,
+  SiGithubactions,
+  SiJest,
+  SiMake,
+  SiMysql,
+  SiN8n,
+  SiNestjs,
+  SiNextdotjs,
+  SiNginx,
+  SiNodedotjs,
+  SiOpenjdk,
+  SiPhp,
+  SiPostgresql,
+  SiPostman,
+  SiPrisma,
+  SiPython,
+  SiRailway,
+  SiReact,
+  SiRedis,
+  SiSupabase,
+  SiTailwindcss,
+  SiTypescript,
+  SiVercel,
+  SiVitest,
+  SiVuedotjs,
+  SiWhatsapp,
+  type IconType,
+} from "@icons-pack/react-simple-icons";
 import RevealStagger from "@/components/fx/RevealStagger";
 import { CORE_TECHS, SKILLS } from "@/lib/content";
+import type { Dict } from "@/lib/i18n";
 
-const ICON_CDN = "https://cdn.simpleicons.org";
 const ICON_COLOR = "5FB8FF";
+const ICONS: Record<string, IconType> = {
+  angular: SiAngular,
+  docker: SiDocker,
+  dotnet: SiDotnet,
+  fastapi: SiFastapi,
+  githubactions: SiGithubactions,
+  jest: SiJest,
+  make: SiMake,
+  mysql: SiMysql,
+  n8n: SiN8n,
+  nestjs: SiNestjs,
+  nextdotjs: SiNextdotjs,
+  nginx: SiNginx,
+  nodedotjs: SiNodedotjs,
+  openjdk: SiOpenjdk,
+  php: SiPhp,
+  postgresql: SiPostgresql,
+  postman: SiPostman,
+  prisma: SiPrisma,
+  python: SiPython,
+  railway: SiRailway,
+  react: SiReact,
+  redis: SiRedis,
+  supabase: SiSupabase,
+  tailwindcss: SiTailwindcss,
+  typescript: SiTypescript,
+  vercel: SiVercel,
+  vitest: SiVitest,
+  vuedotjs: SiVuedotjs,
+  whatsapp: SiWhatsapp,
+};
 
-export default function Stack({ index }: { index: number }) {
+export default function Stack({ index, dict }: { index: number; dict: Dict }) {
   return (
     <section className="cx-section py-[clamp(84px,11vh,104px)]">
       <RevealStagger index={index} className="m-auto w-full max-w-[1280px]">
         <div className="mb-[30px]">
-          <div className="cx-label mb-4">{"// STACK_TÉCNICO"}</div>
+          <div className="cx-label mb-4">{dict.stack.label}</div>
           <h2 className="m-0 font-display text-[clamp(20px,3.4vw,40px)] text-white">
-            EL <span className="text-sky">ARSENAL</span>
+            {dict.stack.title}
           </h2>
         </div>
 
@@ -27,6 +90,7 @@ export default function Stack({ index }: { index: number }) {
               <div className="flex flex-wrap gap-[7px]">
                 {cat.items.map((item) => {
                   const core = CORE_TECHS.includes(item.label);
+                  const Icon = item.icon ? ICONS[item.icon] : null;
                   return (
                     <span
                       key={item.label}
@@ -38,13 +102,12 @@ export default function Stack({ index }: { index: number }) {
                     >
                       <span className="relative inline-flex size-[15px] flex-none items-center justify-center">
                         <span className="text-[10px] leading-none text-blue">▪</span>
-                        {item.icon && (
-                          // eslint-disable-next-line @next/next/no-img-element -- SVGs diminutos del CDN de simple-icons
-                          <img
-                            src={`${ICON_CDN}/${item.icon}/${ICON_COLOR}`}
-                            alt=""
-                            className="absolute inset-0 size-full object-contain"
-                            loading="lazy"
+                        {Icon && (
+                          <Icon
+                            aria-hidden
+                            color={`#${ICON_COLOR}`}
+                            size={15}
+                            className="absolute inset-0 size-full"
                           />
                         )}
                       </span>

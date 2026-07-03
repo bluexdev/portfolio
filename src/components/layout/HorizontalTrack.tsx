@@ -17,6 +17,14 @@ import PixelCursor from "./PixelCursor";
 import TopBar from "./TopBar";
 import Grain from "@/components/fx/Grain";
 import Konami from "@/components/fx/Konami";
+import type { Dict } from "@/lib/i18n";
+import type { Locale } from "@/lib/portfolioConfig";
+
+declare global {
+  interface Window {
+    webkitAudioContext?: typeof AudioContext;
+  }
+}
 
 export interface TrackContextValue {
   names: string[];
@@ -31,6 +39,9 @@ export interface TrackContextValue {
   remeasure: () => void;
   /** bloquea ←/→ del track (mientras se juega Snake) */
   setKeysLocked: (locked: boolean) => void;
+  soundOn: boolean;
+  toggleSound: () => void;
+  playBlip: (kind?: "nav" | "ok" | "fail") => void;
   xblue: boolean;
   toggleXblue: () => void;
   reduced: boolean;
@@ -48,9 +59,15 @@ const LERP = 0.1;
 
 export default function HorizontalTrack({
   names,
+  locale,
+  dict,
+  soundInitiallyEnabled = false,
   children,
 }: {
   names: string[];
+  locale: Locale;
+  dict: Dict;
+  soundInitiallyEnabled?: boolean;
   children: ReactNode;
 }) {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -61,12 +78,27 @@ export default function HorizontalTrack({
   const keysLocked = useRef(false);
   const activeRef = useRef(0);
   const reducedRef = useRef(false);
+  const exploredRef = useRef(false);
+  const audioRef = useRef<AudioContext | null>(null);
   const namesRef = useRef(names);
   namesRef.current = names;
 
   const [activeIdx, setActiveIdx] = useState(0);
   const [xblue, setXblue] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const [soundOn, setSoundOn] = useState(soundInitiallyEnabled);
+  const [showSwipeHint, setShowSwipeHint] = useState(false);
+
+  const markExplored = useCallback(() => {
+    if (exploredRef.current) return;
+    exploredRef.current = true;
+    setShowSwipeHint(false);
+    try {
+      localStorage.setItem("cxd_swipe_hint_seen", "1");
+    } catch {
+      /* sin persistencia */
+    }
+  }, []);
 
   const measure = useCallback(() => {
     const track = trackRef.current;
@@ -88,9 +120,12 @@ export default function HorizontalTrack({
   const goTo = useCallback(
     (i: number) => {
       const o = scroll.current.offsets[i];
-      if (o != null) scroll.current.target = clamp(o);
+      if (o != null) {
+        markExplored();
+        scroll.current.target = clamp(o);
+      }
     },
-    [clamp]
+    [clamp, markExplored]
   );
 
   const goToSection = useCallback(
@@ -109,6 +144,30 @@ export default function HorizontalTrack({
   }, []);
 
   const toggleXblue = useCallback(() => setXblue((v) => !v), []);
+  const toggleSound = useCallback(() => setSoundOn((v) => !v), []);
+
+  const playBlip = useCallback(
+    (kind: "nav" | "ok" | "fail" = "nav") => {
+      if (!soundOn || reducedRef.current) return;
+      const AudioCtor = window.AudioContext ?? window.webkitAudioContext;
+      if (!AudioCtor) return;
+      const ctx = audioRef.current ?? new AudioCtor();
+      audioRef.current = ctx;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const now = ctx.currentTime;
+      const freq = kind === "ok" ? 880 : kind === "fail" ? 160 : 520;
+      osc.type = "square";
+      osc.frequency.setValueAtTime(freq, now);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.035, now + 0.012);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.1);
+    },
+    [soundOn]
+  );
 
   useEffect(() => {
     const red = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -121,6 +180,7 @@ export default function HorizontalTrack({
     const onWheel = (e: WheelEvent) => {
       const d = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
       scroll.current.target = clamp(scroll.current.target + d);
+      markExplored();
       e.preventDefault();
     };
     const onTouchStart = (e: TouchEvent) => {
@@ -140,6 +200,7 @@ export default function HorizontalTrack({
       // lock de eje: los gestos verticales scrollean dentro de la sección
       if (tc.axis === "x") {
         scroll.current.target = clamp(tc.base - dx * 1.5);
+        markExplored();
         e.preventDefault();
       }
     };
@@ -149,9 +210,11 @@ export default function HorizontalTrack({
       if (tag === "INPUT" || tag === "TEXTAREA") return;
       if (e.key === "ArrowRight") {
         goTo(Math.min(namesRef.current.length - 1, activeRef.current + 1));
+        markExplored();
         e.preventDefault();
       } else if (e.key === "ArrowLeft") {
         goTo(Math.max(0, activeRef.current - 1));
+        markExplored();
         e.preventDefault();
       }
     };
@@ -180,6 +243,12 @@ export default function HorizontalTrack({
     };
     const raf1 = requestAnimationFrame(() => requestAnimationFrame(setup));
     document.fonts?.ready?.then(() => measure()).catch(() => {});
+
+    try {
+      setShowSwipeHint(localStorage.getItem("cxd_swipe_hint_seen") !== "1");
+    } catch {
+      setShowSwipeHint(true);
+    }
 
     // nudge inicial: a los 1.8s el track avanza 80px y regresa
     const nudgeT = window.setTimeout(() => {
@@ -230,7 +299,7 @@ export default function HorizontalTrack({
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("resize", onResize);
     };
-  }, [clamp, goTo, measure]);
+  }, [clamp, goTo, markExplored, measure]);
 
   const value = useMemo<TrackContextValue>(
     () => ({
@@ -242,11 +311,29 @@ export default function HorizontalTrack({
       getOffset,
       remeasure: measure,
       setKeysLocked,
+      soundOn,
+      toggleSound,
+      playBlip,
       xblue,
       toggleXblue,
       reduced,
     }),
-    [names, activeIdx, goTo, goToSection, scrollToPx, getOffset, measure, setKeysLocked, xblue, toggleXblue, reduced]
+    [
+      names,
+      activeIdx,
+      goTo,
+      goToSection,
+      scrollToPx,
+      getOffset,
+      measure,
+      setKeysLocked,
+      soundOn,
+      toggleSound,
+      playBlip,
+      xblue,
+      toggleXblue,
+      reduced,
+    ]
   );
 
   return (
@@ -271,8 +358,14 @@ export default function HorizontalTrack({
         <div className="pointer-events-none absolute bottom-4 left-4 z-[35] size-6 border-b-2 border-l-2 border-blue/55" />
         <div className="pointer-events-none absolute bottom-4 right-4 z-[35] size-6 border-b-2 border-r-2 border-blue/55" />
 
-        <TopBar />
-        <BottomHud />
+        {showSwipeHint && (
+          <div className="pointer-events-none absolute bottom-[74px] left-1/2 z-[41] -translate-x-1/2 border border-cyan/55 bg-ink/88 px-4 py-3 text-center font-display text-[9px] leading-[1.8] text-cyan shadow-glow nav:bottom-[86px]">
+            {dict.hud.swipeHint}
+          </div>
+        )}
+
+        <TopBar locale={locale} />
+        <BottomHud dict={dict} />
 
         {/* barra de progreso */}
         <div
@@ -280,7 +373,7 @@ export default function HorizontalTrack({
           className="absolute bottom-0 left-0 z-[39] h-0.5 w-0 bg-gradient-to-r from-electric to-cyan shadow-[0_0_10px_rgba(0,255,255,.6)]"
         />
 
-        <MobileMenu />
+        <MobileMenu dict={dict} locale={locale} />
         <PixelCursor />
         <Konami />
         <BootScreen />
