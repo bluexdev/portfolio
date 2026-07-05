@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getPostSlugs } from "@/lib/data";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://carlxsdev.com";
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://carlxs.dev";
   const slugs = await getPostSlugs();
   const now = new Date();
 

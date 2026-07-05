@@ -43,15 +43,18 @@ export default function Perfil({
 
         <div className="flex min-w-0 flex-[1_1_300px] flex-col items-center gap-[22px]">
           {photoUrl ? (
-            <Image
-              src={photoUrl}
-              alt={dict.perfil.photoAlt}
-              width={180}
-              height={180}
-              className="size-[clamp(130px,14vw,180px)] rounded-full border border-sky/40 object-cover shadow-[0_0_28px_rgba(0,128,255,.25)]"
-            />
+            <div className="flex size-[clamp(230px,24vw,320px)] items-center justify-center border border-sky/45 bg-panel-2 p-2 shadow-[0_0_32px_rgba(0,128,255,.25)]">
+              <Image
+                src={photoUrl}
+                alt={dict.perfil.photoAlt}
+                width={320}
+                height={320}
+                className="size-full object-contain [image-rendering:pixelated]"
+                priority
+              />
+            </div>
           ) : (
-            <div className="flex size-[clamp(130px,14vw,180px)] items-end justify-center overflow-hidden rounded-full border border-sky/40 bg-panel-2 shadow-[0_0_28px_rgba(0,128,255,.25)]">
+            <div className="flex size-[clamp(230px,24vw,320px)] items-end justify-center overflow-hidden border border-sky/40 bg-panel-2 shadow-[0_0_28px_rgba(0,128,255,.25)]">
               <PixelAvatar className="size-[88%] [filter:drop-shadow(0_0_10px_rgba(0,191,255,.25))]" />
             </div>
           )}

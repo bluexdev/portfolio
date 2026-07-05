@@ -426,7 +426,7 @@ export const FALLBACK_SETTINGS: SiteSettings = {
   cvUrl: "/carlos-alvarez-ponce-cv.pdf",
   showProjectMetrics: false,
   soundEnabled: false,
-  photoUrl: null,
+  photoUrl: "/profile-image.png",
 };
 
 export const FALLBACK_HOME: HomeData = {

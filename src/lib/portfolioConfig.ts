@@ -147,7 +147,10 @@ export function normalizeSiteSettings(settings: PartialSettings | null | undefin
 
 export function whatsappUrl(settings: Pick<SiteSettings, "phone">): string {
   const digits = settings.phone.replace(/\D/g, "");
-  return `https://wa.me/${digits}`;
+  const text = encodeURIComponent(
+    "Hola Carlos, vi tu portfolio y me gustaría conversar contigo sobre una oportunidad o proyecto."
+  );
+  return `https://wa.me/${digits}?text=${text}`;
 }
 
 export function isCvDownloadEnabled(settings: Pick<SiteSettings, "showCv" | "cvUrl">): boolean {

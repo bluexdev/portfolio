@@ -18,6 +18,7 @@ export default function Contacto({
   const linkedinUser = settings.linkedin.replace(/\/$/, "").split("/").pop() ?? settings.linkedin;
   const githubUser = settings.github.replace(/\/$/, "").split("/").pop() ?? settings.github;
   const waUrl = whatsappUrl(settings);
+  const waDisplay = waUrl.replace("https://", "");
   const cvEnabled = isCvDownloadEnabled(settings);
 
   return (
@@ -70,7 +71,7 @@ export default function Contacto({
             <div className="pl-[22px]">
               <span className="text-blue">&quot;whatsapp&quot;</span>:{" "}
               <a href={waUrl} target="_blank" rel="noreferrer" className={LINK_HOVER}>
-                &quot;wa.me/{settings.phone.replace(/\D/g, "")}&quot;
+                &quot;{waDisplay}&quot;
               </a>
               ,
             </div>

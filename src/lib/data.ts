@@ -154,10 +154,10 @@ function mapSettings(s: RawSettings | null | undefined): SiteSettings {
     showBlog: s.showBlog ?? false,
     showTrayecto: s.showTrayecto ?? true,
     showCv: s.showCv ?? FALLBACK_SETTINGS.showCv,
-    cvUrl: s.cvFileUrl ?? s.cvUrl ?? FALLBACK_SETTINGS.cvUrl,
+    cvUrl: s.cvUrl ?? s.cvFileUrl ?? FALLBACK_SETTINGS.cvUrl,
     showProjectMetrics: s.showProjectMetrics ?? false,
     soundEnabled: s.soundEnabled ?? false,
-    photoUrl: s.photoUrl ?? null,
+    photoUrl: FALLBACK_SETTINGS.photoUrl ?? s.photoUrl ?? null,
   };
 }
 

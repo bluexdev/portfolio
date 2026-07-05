@@ -74,7 +74,9 @@ describe("portfolioConfig", () => {
   });
 
   it("builds direct WhatsApp and CV actions only when enabled", () => {
-    expect(whatsappUrl(baseHome.settings)).toBe("https://wa.me/51938847564");
+    expect(whatsappUrl(baseHome.settings)).toBe(
+      "https://wa.me/51938847564?text=Hola%20Carlos%2C%20vi%20tu%20portfolio%20y%20me%20gustar%C3%ADa%20conversar%20contigo%20sobre%20una%20oportunidad%20o%20proyecto."
+    );
     expect(isCvDownloadEnabled(baseHome.settings)).toBe(true);
     expect(
       isCvDownloadEnabled({ ...baseHome.settings, showCv: false, cvUrl: "/cv.pdf" })

@@ -23,7 +23,7 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://carlxsdev.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://carlxs.dev"),
   title: "CARLXSDEV — Carlos Alvarez Ponce · Full Stack Developer",
   description:
     "Portfolio de Carlos Alvarez Ponce (bluexdev). Full Stack Developer · Founder @ XBLUE · AI / Automation · Lima, PE.",
@@ -68,7 +68,7 @@ const personJsonLd = {
     addressLocality: "Lima",
     addressCountry: "PE",
   },
-  url: "https://carlxsdev.com",
+  url: "https://carlxs.dev",
   sameAs: ["https://github.com/bluexdev", "https://linkedin.com/in/carlos-alvarez-ponce"],
   knowsAbout: [
     "Next.js",

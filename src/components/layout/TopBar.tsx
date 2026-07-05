@@ -18,7 +18,7 @@ export default function TopBar({ locale }: { locale: Locale }) {
           <span className="size-[11px] rounded-full bg-[#ffbd2e]" />
           <span className="size-[11px] rounded-full bg-success" />
         </div>
-        <span className="font-mono text-xs tracking-[.18em] text-white/55">carlxsdev.com</span>
+        <span className="font-mono text-xs tracking-[.18em] text-white/55">carlxs.dev</span>
         <span className="hidden items-center gap-1.5 border border-white/12 px-2 py-[3px] font-mono text-[10px] tracking-[.1em] text-white/30 nav:inline-flex">
           <span className="size-1.5 rounded-full bg-success" />
           main · v2.6
