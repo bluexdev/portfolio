@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     description: "Full Stack Developer · Founder @ XBLUE · AI / Automation · Lima, PE.",
     url: "/",
     siteName: "CARLXSDEV",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+    images: [{ url: "/og-carlxsdev-preview.png", width: 864, height: 504 }],
     locale: "es_PE",
     type: "website",
   },
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "CARLXSDEV — Carlos Alvarez Ponce",
     description: "Full Stack Developer · Founder @ XBLUE · AI / Automation · Lima, PE.",
-    images: ["/opengraph-image"],
+    images: ["/og-carlxsdev-preview.png"],
   },
   icons: {
     icon: "/icon",
