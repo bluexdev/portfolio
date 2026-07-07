@@ -15,7 +15,7 @@ function drawerTarget() {
 
 function openProjectTarget(sectionOffset: number, card: HTMLElement, drawer: HTMLElement | null) {
   if (window.innerWidth < 640 && drawer) {
-    return sectionOffset + drawer.offsetLeft - 16;
+    return sectionOffset + drawer.offsetLeft - window.innerWidth * 0.5;
   }
 
   return sectionOffset + card.offsetLeft - 40;
