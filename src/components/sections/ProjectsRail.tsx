@@ -13,6 +13,14 @@ function drawerTarget() {
   return Math.min(1040, window.innerWidth * 0.86) + 16;
 }
 
+function openProjectTarget(sectionOffset: number, card: HTMLElement, drawer: HTMLElement | null) {
+  if (window.innerWidth < 640 && drawer) {
+    return sectionOffset + drawer.offsetLeft - 16;
+  }
+
+  return sectionOffset + card.offsetLeft - 40;
+}
+
 /**
  * Cards de proyectos + acordeón horizontal "VER MÁS".
  * El drawer anima `width` por rAF (lerp .16) — las transiciones CSS
@@ -93,7 +101,9 @@ export default function ProjectsRail({
         if (open != null) {
           const d = drawerRefs.current[open];
           const card = d?.previousElementSibling as HTMLElement | null;
-          if (card) scrollToPx(getOffset(sectionIndex) + card.offsetLeft - 40);
+          if (card) {
+            scrollToPx(openProjectTarget(getOffset(sectionIndex), card, d));
+          }
         }
       }
     };
@@ -107,7 +117,7 @@ export default function ProjectsRail({
         <Fragment key={p.id}>
           {/* card */}
           <div className="flex w-[clamp(286px,80vw,372px)] flex-none flex-col overflow-hidden border border-blue/20 bg-panel shadow-pixel transition-[border-color,box-shadow] duration-[250ms] hover:border-sky/60 hover:shadow-[6px_6px_0_rgba(0,0,0,.5),0_0_34px_rgba(0,128,255,.2)]">
-            <div className="relative h-[200px] flex-none border-b border-blue/20">
+            <div className="relative h-[clamp(154px,22vh,200px)] flex-none border-b border-blue/20">
               {p.heroUrl ? (
                 <Image
                   src={p.heroUrl}
@@ -121,7 +131,7 @@ export default function ProjectsRail({
                   hue={p.hue}
                   seed={p.seed}
                   variant={p.previewVariant}
-                  className="block h-[200px] w-full [image-rendering:pixelated]"
+                  className="block h-full w-full [image-rendering:pixelated]"
                 />
               )}
               <span className="absolute left-3 top-3 border border-sky/40 bg-ink/85 px-[9px] py-[5px] font-mono text-[10px] tracking-[.14em] text-cyan">
