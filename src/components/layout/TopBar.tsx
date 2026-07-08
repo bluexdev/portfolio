@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useTrack } from "./HorizontalTrack";
+import { portfolioTrack } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/portfolioConfig";
 
@@ -18,7 +19,6 @@ export default function TopBar({ locale }: { locale: Locale }) {
           <span className="size-[11px] rounded-full bg-[#ffbd2e]" />
           <span className="size-[11px] rounded-full bg-success" />
         </div>
-        <span className="font-mono text-xs tracking-[.18em] text-white/55">carlxs.dev</span>
         <span className="hidden items-center gap-1.5 border border-white/12 px-2 py-[3px] font-mono text-[10px] tracking-[.1em] text-white/30 nav:inline-flex">
           <span className="size-1.5 rounded-full bg-success" />
           main · v2.6
@@ -31,6 +31,7 @@ export default function TopBar({ locale }: { locale: Locale }) {
             key={label}
             onClick={() => {
               playBlip("nav");
+              portfolioTrack("Top Nav Click", { section: label, locale });
               goTo(idx);
             }}
             className={cn(
@@ -43,7 +44,10 @@ export default function TopBar({ locale }: { locale: Locale }) {
         ))}
         <button
           type="button"
-          onClick={toggleSound}
+          onClick={() => {
+            portfolioTrack("Sound Toggle", { state: soundOn ? "off" : "on", locale });
+            toggleSound();
+          }}
           aria-label={soundOn ? "Desactivar sonido" : "Activar sonido"}
           title={soundOn ? "Sonido activado" : "Sonido apagado"}
           className={cn(
@@ -55,6 +59,7 @@ export default function TopBar({ locale }: { locale: Locale }) {
         </button>
         <Link
           href={nextHref}
+          onClick={() => portfolioTrack("Language Toggle", { to: nextLocale, locale })}
           className="border border-white/14 px-2 py-1.5 font-mono text-[11px] text-white/50 no-underline transition-colors hover:border-cyan/55 hover:text-cyan"
         >
           {nextLocale}

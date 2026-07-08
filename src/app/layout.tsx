@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
 import { Geist, JetBrains_Mono, Press_Start_2P } from "next/font/google";
+import PortfolioAnalytics from "@/components/analytics/PortfolioAnalytics";
 import "./globals.css";
 
 const pressStart = Press_Start_2P({
@@ -83,6 +83,16 @@ const personJsonLd = {
   ],
 };
 
+const ownerAnalyticsScript = `
+try {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get("owner") === "1" || params.get("analytics") === "off") {
+    window.localStorage.setItem("cxd_analytics_owner", "1");
+    document.cookie = "cxd_analytics_owner=1; Path=/; Max-Age=31536000; SameSite=Lax";
+  }
+} catch (_) {}
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -96,8 +106,12 @@ export default function RootLayout({
           suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
+        <script
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: ownerAnalyticsScript }}
+        />
         {children}
-        <Analytics />
+        <PortfolioAnalytics />
       </body>
     </html>
   );

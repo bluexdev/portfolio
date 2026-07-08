@@ -1,3 +1,4 @@
+import AnalyticsLink from "@/components/analytics/AnalyticsLink";
 import RevealStagger from "@/components/fx/RevealStagger";
 import type { Dict } from "@/lib/i18n";
 import { isCvDownloadEnabled, whatsappUrl } from "@/lib/portfolioConfig";
@@ -42,37 +43,70 @@ export default function Contacto({
             <div className="text-white/75">{"{"}</div>
             <div className="pl-[22px]">
               <span className="text-blue">&quot;email&quot;</span>:{" "}
-              <a href={`mailto:${settings.email}`} className={LINK_HOVER}>
+              <AnalyticsLink
+                href={`mailto:${settings.email}`}
+                event="Contact Link"
+                eventProps={{ target: "email", place: "terminal" }}
+                className={LINK_HOVER}
+              >
                 &quot;{settings.email}&quot;
-              </a>
+              </AnalyticsLink>
               ,
             </div>
             <div className="pl-[22px]">
               <span className="text-blue">&quot;phone&quot;</span>:{" "}
-              <a href={waUrl} target="_blank" rel="noreferrer" className={LINK_HOVER}>
+              <AnalyticsLink
+                href={waUrl}
+                target="_blank"
+                rel="noreferrer"
+                event="Contact Link"
+                eventProps={{ target: "whatsapp", place: "terminal" }}
+                className={LINK_HOVER}
+              >
                 &quot;{settings.phoneDisplay}&quot;
-              </a>
+              </AnalyticsLink>
               ,
             </div>
             <div className="pl-[22px]">
               <span className="text-blue">&quot;linkedin&quot;</span>:{" "}
-              <a href={settings.linkedin} target="_blank" rel="noreferrer" className={LINK_HOVER}>
+              <AnalyticsLink
+                href={settings.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                event="External Link"
+                eventProps={{ target: "linkedin", place: "terminal" }}
+                className={LINK_HOVER}
+              >
                 &quot;{linkedinUser}&quot;
-              </a>
+              </AnalyticsLink>
               ,
             </div>
             <div className="pl-[22px]">
               <span className="text-blue">&quot;github&quot;</span>:{" "}
-              <a href={settings.github} target="_blank" rel="noreferrer" className={LINK_HOVER}>
+              <AnalyticsLink
+                href={settings.github}
+                target="_blank"
+                rel="noreferrer"
+                event="External Link"
+                eventProps={{ target: "github", place: "terminal" }}
+                className={LINK_HOVER}
+              >
                 &quot;{githubUser}&quot;
-              </a>
+              </AnalyticsLink>
               ,
             </div>
             <div className="pl-[22px]">
               <span className="text-blue">&quot;whatsapp&quot;</span>:{" "}
-              <a href={waUrl} target="_blank" rel="noreferrer" className={LINK_HOVER}>
+              <AnalyticsLink
+                href={waUrl}
+                target="_blank"
+                rel="noreferrer"
+                event="Contact Link"
+                eventProps={{ target: "whatsapp", place: "terminal_url" }}
+                className={LINK_HOVER}
+              >
                 &quot;{waDisplay}&quot;
-              </a>
+              </AnalyticsLink>
               ,
             </div>
             <div className="pl-[22px]">
@@ -93,45 +127,55 @@ export default function Contacto({
         </div>
 
         <div className="mb-7 flex flex-wrap gap-3.5">
-          <a
+          <AnalyticsLink
             href={`mailto:${settings.email}`}
+            event="Contact CTA"
+            eventProps={{ target: "email", place: "contact" }}
             className="bg-cyan px-[22px] py-3.5 font-mono text-xs font-bold tracking-[.14em] text-ink no-underline shadow-[0_0_22px_rgba(0,255,255,.35)] transition-all duration-200 hover:shadow-[0_0_32px_rgba(0,255,255,.6)]"
           >
             {dict.contacto.write}
-          </a>
-          <a
+          </AnalyticsLink>
+          <AnalyticsLink
             href={waUrl}
             target="_blank"
             rel="noreferrer"
+            event="Contact CTA"
+            eventProps={{ target: "whatsapp", place: "contact" }}
             className="border border-success/55 bg-success/7 px-[22px] py-3.5 font-mono text-xs font-bold tracking-[.14em] text-success no-underline transition-all duration-200 hover:border-cyan hover:text-cyan hover:shadow-[0_0_22px_rgba(0,255,255,.35)]"
           >
             {dict.contacto.whatsapp}
-          </a>
+          </AnalyticsLink>
           {cvEnabled && (
-            <a
+            <AnalyticsLink
               href={settings.cvUrl}
               download
+              event="CV Download"
+              eventProps={{ place: "contact", file: "pdf" }}
               className="border border-electric bg-transparent px-[22px] py-3.5 font-mono text-xs tracking-[.14em] text-sky no-underline transition-all duration-200 hover:border-cyan hover:text-cyan hover:shadow-[0_0_22px_rgba(0,255,255,.35)]"
             >
               {dict.hero.cv}
-            </a>
+            </AnalyticsLink>
           )}
-          <a
+          <AnalyticsLink
             href={settings.github}
             target="_blank"
             rel="noreferrer"
+            event="External Link"
+            eventProps={{ target: "github", place: "contact" }}
             className="border border-electric bg-transparent px-[22px] py-3.5 font-mono text-xs tracking-[.14em] text-sky no-underline transition-all duration-200 hover:border-cyan hover:text-cyan hover:shadow-[0_0_22px_rgba(0,255,255,.35)]"
           >
             ⌥ GITHUB
-          </a>
-          <a
+          </AnalyticsLink>
+          <AnalyticsLink
             href={settings.linkedin}
             target="_blank"
             rel="noreferrer"
+            event="External Link"
+            eventProps={{ target: "linkedin", place: "contact" }}
             className="border border-electric bg-transparent px-[22px] py-3.5 font-mono text-xs tracking-[.14em] text-sky no-underline transition-all duration-200 hover:border-cyan hover:text-cyan hover:shadow-[0_0_22px_rgba(0,255,255,.35)]"
           >
             in LINKEDIN
-          </a>
+          </AnalyticsLink>
         </div>
 
         <div className="font-mono text-[10px] tracking-[.16em] text-white/30">

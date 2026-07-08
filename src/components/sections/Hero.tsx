@@ -1,3 +1,4 @@
+import AnalyticsLink from "@/components/analytics/AnalyticsLink";
 import GoButton from "@/components/fx/GoButton";
 import Scramble from "@/components/fx/Scramble";
 import type { Dict } from "@/lib/i18n";
@@ -43,27 +44,32 @@ export default function Hero({ dict, settings }: { dict: Dict; settings: SiteSet
         <div className="mt-[42px] flex flex-wrap justify-center gap-3.5">
           <GoButton
             section={dict.names.proyectos}
+            eventLabel="projects"
             className={`${CTA_BASE} border border-cyan bg-cyan font-bold text-ink shadow-[0_0_24px_rgba(0,255,255,.42)] hover:bg-white hover:shadow-[0_0_34px_rgba(0,255,255,.62)]`}
           >
             {dict.hero.ctaProjects}
           </GoButton>
           {cvEnabled && (
-            <a
+            <AnalyticsLink
               href={settings.cvUrl}
               download
+              event="CV Download"
+              eventProps={{ place: "hero", file: "pdf" }}
               className={`${CTA_BASE} border border-electric bg-blue/10 text-sky no-underline hover:border-cyan hover:text-cyan hover:shadow-glow`}
             >
               {dict.hero.cv}
-            </a>
+            </AnalyticsLink>
           )}
           <GoButton
             section={dict.names.arcade}
+            eventLabel="arcade"
             className={`${CTA_BASE} border border-white/18 bg-transparent text-white/60 hover:border-cyan hover:text-cyan hover:shadow-glow`}
           >
             {dict.hero.ctaArcade}
           </GoButton>
           <GoButton
             section={dict.names.contacto}
+            eventLabel="contact"
             className={`${CTA_BASE} border border-white/18 bg-transparent text-white/60 hover:border-cyan hover:text-cyan hover:shadow-glow`}
           >
             {dict.hero.ctaContact}

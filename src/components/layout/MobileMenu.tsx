@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useTrack } from "./HorizontalTrack";
 import type { Dict } from "@/lib/i18n";
+import { portfolioTrack } from "@/lib/analytics";
 import type { Locale } from "@/lib/portfolioConfig";
 
 export default function MobileMenu({ dict, locale }: { dict: Dict; locale: Locale }) {
@@ -24,7 +25,10 @@ export default function MobileMenu({ dict, locale }: { dict: Dict; locale: Local
   return (
     <>
       <button
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          portfolioTrack("Mobile Menu", { action: "open", locale });
+          setOpen(true);
+        }}
         className="pointer-events-auto absolute right-[clamp(18px,4vw,40px)] top-4 z-[40] border border-sky/50 bg-ink/70 px-[11px] py-[9px] font-display text-[9px] text-cyan nav:hidden"
       >
         {dict.hud.menuLabel}
@@ -45,6 +49,7 @@ export default function MobileMenu({ dict, locale }: { dict: Dict; locale: Local
               onClick={() => {
                 setOpen(false);
                 playBlip("nav");
+                portfolioTrack("Mobile Nav Click", { section: label, locale });
                 goTo(idx);
               }}
               className="min-h-12 bg-transparent px-[22px] py-3.5 font-display text-[13px] tracking-[.05em] text-white/80 transition-colors hover:text-cyan"
@@ -55,7 +60,10 @@ export default function MobileMenu({ dict, locale }: { dict: Dict; locale: Local
           <div className="mt-7 flex gap-3">
             <button
               type="button"
-              onClick={toggleSound}
+              onClick={() => {
+                portfolioTrack("Sound Toggle", { state: soundOn ? "off" : "on", locale });
+                toggleSound();
+              }}
               className="border border-white/16 px-4 py-3 font-mono text-xs text-white/65"
               aria-label={soundOn ? "Desactivar sonido" : "Activar sonido"}
             >
@@ -63,6 +71,7 @@ export default function MobileMenu({ dict, locale }: { dict: Dict; locale: Local
             </button>
             <Link
               href={nextHref}
+              onClick={() => portfolioTrack("Language Toggle", { to: nextLocale, locale })}
               className="border border-white/16 px-4 py-3 font-mono text-xs text-white/65 no-underline"
             >
               {nextLocale}

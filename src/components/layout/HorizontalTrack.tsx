@@ -15,6 +15,7 @@ import BottomHud from "./BottomHud";
 import MobileMenu from "./MobileMenu";
 import PixelCursor from "./PixelCursor";
 import TopBar from "./TopBar";
+import TrackView from "@/components/analytics/TrackView";
 import Grain from "@/components/fx/Grain";
 import Konami from "@/components/fx/Konami";
 import type { Dict } from "@/lib/i18n";
@@ -365,6 +366,7 @@ export default function HorizontalTrack({
         )}
 
         <TopBar locale={locale} />
+        <TrackView activeIdx={activeIdx} names={names} locale={locale} />
         <BottomHud dict={dict} />
 
         {/* barra de progreso */}

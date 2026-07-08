@@ -5,6 +5,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import PixelPreview from "@/components/fx/PixelPreview";
 import { useTrack } from "@/components/layout/HorizontalTrack";
 import type { Dict } from "@/lib/i18n";
+import { portfolioTrack } from "@/lib/analytics";
 import type { Project } from "@/lib/types";
 
 const CHIP = "border border-blue/30 px-[7px] py-1 font-mono text-[10px] text-sky";
@@ -164,6 +165,10 @@ export default function ProjectsRail({
                   <button
                     onClick={() => {
                       playBlip("ok");
+                      portfolioTrack("Project Detail", {
+                        project: p.id,
+                        action: openIdx === idx ? "close" : "open",
+                      });
                       setOpenIdx(openIdx === idx ? null : idx);
                     }}
                     aria-expanded={openIdx === idx}
@@ -206,6 +211,7 @@ export default function ProjectsRail({
                   <button
                     onClick={() => {
                       playBlip("nav");
+                      portfolioTrack("Project Detail", { project: p.id, action: "close" });
                       setOpenIdx(null);
                     }}
                     className="flex-none cursor-pointer border border-blue/40 bg-transparent px-[13px] py-[9px] font-mono text-[11px] tracking-[.1em] text-sky transition-colors hover:border-cyan hover:text-cyan"
@@ -278,6 +284,9 @@ export default function ProjectsRail({
                       href={p.repoUrl}
                       target="_blank"
                       rel="noreferrer"
+                      onClick={() =>
+                        portfolioTrack("External Link", { target: "repo", place: p.id })
+                      }
                       className="inline-block border border-electric px-[18px] py-[11px] font-mono text-[11px] tracking-[.12em] text-cyan no-underline transition-all hover:border-cyan hover:shadow-[0_0_18px_rgba(0,255,255,.3)]"
                     >
                       {dict.proyectos.code}
