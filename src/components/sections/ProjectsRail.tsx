@@ -227,7 +227,7 @@ export default function ProjectsRail({
                       src={p.heroUrl}
                       alt={`Imagen principal de ${p.name}`}
                       fill
-                      className="rounded-[2px] object-cover"
+                      className="rounded-[2px] bg-panel-2 object-contain"
                       sizes="(max-width: 1040px) 86vw, 1040px"
                     />
                   </div>
@@ -307,7 +307,7 @@ export default function ProjectsRail({
                                 src={url}
                                 alt={`${p.name} — captura ${i + 1}`}
                                 fill
-                                className="rounded-[2px] object-cover"
+                                className="rounded-[2px] bg-panel-2 object-contain"
                                 sizes="300px"
                               />
                             </div>

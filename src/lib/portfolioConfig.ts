@@ -40,6 +40,23 @@ const PROJECT_EN: Record<
       "Technical architecture and endpoint documentation",
     ],
   },
+  portfolio: {
+    summary:
+      "Personal pixel-art portfolio deployed on carlxs.dev and designed as a recruiter conversion funnel.",
+    bullets: [
+      "Next.js App Router with horizontal navigation, ES/EN content and Sanity Studio",
+      "Downloadable resume, direct WhatsApp, analytics and SEO metadata",
+      "Production deploy on Vercel with the carlxs.dev domain",
+    ],
+    longDesc:
+      "CARLXSDEV Portfolio is my personal site shipped as a functional pixel-art experience: horizontal navigation, bilingual content, Sanity integration, resume download, WhatsApp contact and conversion events to measure real recruiter interest.",
+    features: [
+      "Responsive pixel-art visual system with section-based navigation",
+      "Custom Sanity Studio for managing content and images",
+      "Analytics events for resume downloads, WhatsApp, projects and viewed sections",
+      "Metadata, sitemap, JSON-LD, OG image and custom favicon",
+    ],
+  },
   asistente: {
     summary:
       "REST API connecting business inventory with real-time natural-language queries.",

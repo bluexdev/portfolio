@@ -2,7 +2,13 @@ import type { PortableTextBlock } from "@portabletext/react";
 
 export type PreviewVariant = "shop" | "kanban" | "chat" | "dash" | "rooms" | "flow";
 
-export type ProjectStatus = "PRODUCCIÓN" | "EN DESARROLLO" | "EMPRESA" | "PERSONAL";
+export type ProjectStatus =
+  | "PRODUCCIÓN"
+  | "EN EVOLUCIÓN"
+  | "COMPLETADO"
+  | "EN DESARROLLO"
+  | "EMPRESA"
+  | "PERSONAL";
 
 export interface Metric {
   k: string;

@@ -82,6 +82,8 @@ const project = defineType({
         direction: "horizontal",
         list: [
           { title: "Produccion", value: "PRODUCCIÓN" },
+          { title: "En evolucion", value: "EN EVOLUCIÓN" },
+          { title: "Completado", value: "COMPLETADO" },
           { title: "En desarrollo", value: "EN DESARROLLO" },
           { title: "Empresa", value: "EMPRESA" },
           { title: "Personal", value: "PERSONAL" },

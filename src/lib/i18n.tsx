@@ -126,20 +126,22 @@ const es: Dict = {
     ),
     p1: (
       <>
-        Estudiante de 7mo ciclo de{" "}
-        <strong className="font-semibold text-white">Ingeniería de Software en la UPC</strong>, con
-        ~2 años construyendo soluciones reales: desde una API en FastAPI conectada a inventario
-        empresarial, hasta <strong className="font-semibold text-sky">BluJoy</strong>, un
-        e-commerce desplegado en producción con autenticación JWT, APIs REST y pagos en vivo.
+        Desarrollador Full Stack con ~3 años de experiencia en entornos reales, especializado en{" "}
+        <strong className="font-semibold text-white">Next.js, NestJS y JavaScript</strong>. Desarrollo
+        y mantengo <strong className="font-semibold text-sky">BluJoy</strong>, un e-commerce en
+        producción con autenticación JWT, pagos live vía Culqi y webhooks idempotentes, y{" "}
+        <strong className="font-semibold text-sky">ReparaFlow</strong>, un SaaS multi-tenant con
+        arquitectura completa (NestJS, Prisma, Docker, CI/CD) actualmente en evolución activa.
+        Trabajo con principios SOLID, Clean Architecture y Git en flujos organizados.
       </>
     ),
-    p2: "Aplico principios SOLID y POO, trabajo con Git en flujos organizados y contenerizo con Docker. Autónomo, comunicación clara y orientado a resultados.",
+    p2: "",
     photoAlt: "Foto de Carlos Alvarez Ponce",
     stats: [
-      { n: "7mo", l: "CICLO · ING. SOFTWARE · UPC" },
-      { n: "~2 años", l: "EXPERIENCIA CON PYTHON" },
-      { n: "PROD", l: "BLUJOY EN PRODUCCIÓN" },
-      { n: "LIMA", l: "PERÚ · DISPONIBLE REMOTO" },
+      { n: "FULL STACK", l: "Next.js · NestJS · JavaScript" },
+      { n: "~3 AÑOS", l: "en desarrollo de software" },
+      { n: "PROD", l: "BluJoy · ReparaFlow" },
+      { n: "LIMA", l: "Perú · Disponible remoto" },
     ],
     competencies: [
       "Pensamiento Analítico",
@@ -184,7 +186,7 @@ const es: Dict = {
     ),
     intro: (
       <>
-        Seis sistemas en producción, en desarrollo y en empresa. Pulsa{" "}
+        Siete sistemas entre producción, evolución activa y proyectos culminados. Pulsa{" "}
         <span className="text-cyan">VER MÁS</span> para desplegar el detalle.
       </>
     ),
@@ -295,20 +297,22 @@ const en: Dict = {
     ),
     p1: (
       <>
-        7th-semester{" "}
-        <strong className="font-semibold text-white">Software Engineering student at UPC</strong>,
-        with ~2 years building real-world solutions: from a FastAPI service wired to a company
-        inventory, to <strong className="font-semibold text-sky">BluJoy</strong>, an e-commerce
-        running in production with JWT auth, REST APIs and live payments.
+        Full Stack Developer with ~3 years of real-world experience, specialized in{" "}
+        <strong className="font-semibold text-white">Next.js, NestJS and JavaScript</strong>. I build
+        and maintain <strong className="font-semibold text-sky">BluJoy</strong>, a production
+        e-commerce product with JWT authentication, live Culqi payments and idempotent webhooks, and{" "}
+        <strong className="font-semibold text-sky">ReparaFlow</strong>, a multi-tenant SaaS with a
+        complete architecture (NestJS, Prisma, Docker, CI/CD) currently in active evolution. I work
+        with SOLID principles, Clean Architecture and organized Git flows.
       </>
     ),
-    p2: "I apply SOLID and OOP principles, work with organized Git flows and containerize with Docker. Self-driven, clear communication, results-oriented.",
+    p2: "",
     photoAlt: "Photo of Carlos Alvarez Ponce",
     stats: [
-      { n: "7th", l: "SEMESTER · SOFTWARE ENG · UPC" },
-      { n: "~2 yrs", l: "PYTHON EXPERIENCE" },
-      { n: "PROD", l: "BLUJOY IN PRODUCTION" },
-      { n: "LIMA", l: "PERU · REMOTE READY" },
+      { n: "FULL STACK", l: "Next.js · NestJS · JavaScript" },
+      { n: "~3 YRS", l: "building software" },
+      { n: "PROD", l: "BluJoy · ReparaFlow" },
+      { n: "LIMA", l: "Peru · Remote available" },
     ],
     competencies: [
       "Analytical Thinking",
@@ -353,7 +357,7 @@ const en: Dict = {
     ),
     intro: (
       <>
-        Six systems in production, in development and in-company. Press{" "}
+        Seven systems across production, active evolution and completed projects. Press{" "}
         <span className="text-cyan">SEE MORE</span> to expand the details.
       </>
     ),

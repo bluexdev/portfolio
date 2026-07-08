@@ -26,9 +26,11 @@ export default function Perfil({
           <p className="mb-5 mt-0 text-[clamp(14px,1.4vw,18px)] leading-[1.85] text-white/72">
             {dict.perfil.p1}
           </p>
-          <p className="mb-7 mt-0 text-[clamp(14px,1.4vw,18px)] leading-[1.85] text-white/55">
-            {dict.perfil.p2}
-          </p>
+          {dict.perfil.p2 && (
+            <p className="mb-7 mt-0 text-[clamp(14px,1.4vw,18px)] leading-[1.85] text-white/55">
+              {dict.perfil.p2}
+            </p>
+          )}
           <div className="flex flex-wrap gap-[9px]">
             {dict.perfil.competencies.map((c) => (
               <span
