@@ -11,6 +11,11 @@ export function isOwnerVisit(): boolean {
   if (typeof window === "undefined") return false;
 
   const url = new URL(window.location.href);
+  if (url.searchParams.get("owner") === "0" || url.searchParams.get("analytics") === "on") {
+    ownerSession = false;
+    return false;
+  }
+
   if (url.searchParams.get("owner") === "1" || url.searchParams.get("analytics") === "off") {
     ownerSession = true;
     return true;
@@ -31,7 +36,19 @@ export function syncOwnerModeFromUrl(): void {
   if (typeof window === "undefined") return;
 
   const url = new URL(window.location.href);
+  const ownerOff = url.searchParams.get("owner") === "0" || url.searchParams.get("analytics") === "on";
   const ownerMode = url.searchParams.get("owner") === "1" || url.searchParams.get("analytics") === "off";
+
+  if (ownerOff) {
+    ownerSession = false;
+    document.cookie = `${OWNER_KEY}=; Path=/; Max-Age=0; SameSite=Lax`;
+    try {
+      window.localStorage.removeItem(OWNER_KEY);
+    } catch {
+      /* analytics reset remains best-effort */
+    }
+    return;
+  }
 
   if (!ownerMode) return;
 

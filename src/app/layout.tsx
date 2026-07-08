@@ -86,7 +86,10 @@ const personJsonLd = {
 const ownerAnalyticsScript = `
 try {
   var params = new URLSearchParams(window.location.search);
-  if (params.get("owner") === "1" || params.get("analytics") === "off") {
+  if (params.get("owner") === "0" || params.get("analytics") === "on") {
+    window.localStorage.removeItem("cxd_analytics_owner");
+    document.cookie = "cxd_analytics_owner=; Path=/; Max-Age=0; SameSite=Lax";
+  } else if (params.get("owner") === "1" || params.get("analytics") === "off") {
     window.localStorage.setItem("cxd_analytics_owner", "1");
     document.cookie = "cxd_analytics_owner=1; Path=/; Max-Age=31536000; SameSite=Lax";
   }
