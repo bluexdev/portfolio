@@ -51,8 +51,11 @@ export const metadata: Metadata = {
     images: ["/og-carlxsdev-preview.png"],
   },
   icons: {
-    icon: [{ url: "/favicon.png", type: "image/png", sizes: "512x512" }],
-    shortcut: [{ url: "/favicon.png", type: "image/png", sizes: "512x512" }],
+    icon: [
+      { url: "/favicon.ico", type: "image/x-icon", sizes: "any" },
+      { url: "/favicon.png", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: [{ url: "/favicon.ico", type: "image/x-icon", sizes: "any" }],
     apple: [{ url: "/favicon.png", type: "image/png", sizes: "512x512" }],
   },
 };
